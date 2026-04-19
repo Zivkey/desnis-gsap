@@ -1,0 +1,250 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0a0b14;
+  --foreground: #e8ebff;
+  --accent: #7c86ff;
+  --muted: #10121f;
+  --border: rgba(124, 134, 255, 0.1);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-instrument-serif);
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overscroll-behavior: none;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  overflow-x: clip;
+}
+
+::selection {
+  background: var(--accent);
+  color: #0a0b14;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0b14;
+}
+::-webkit-scrollbar-thumb {
+  background: #1e2140;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #2a2e55;
+}
+
+/* Grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.font-display {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+}
+
+.clip-reveal {
+  clip-path: inset(0 0 100% 0);
+}
+
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.btn-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%), rgba(124, 134, 255, 0.3), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+.btn-glow:hover::after { opacity: 1; }
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+.cursor-dot {
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 9999px;
+}
+.cursor-ring {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #fff;
+  border-radius: 9999px;
+}
+@media (pointer: coarse) {
+  .cursor-dot, .cursor-ring { display: none; }
+}
+
+.magnetic {
+  display: inline-block;
+  will-change: transform;
+}
+
+.section-p {
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
+}
+
+.edge-fade {
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+}
+
+.text-outline {
+  -webkit-text-stroke: 1.5px var(--foreground);
+  color: transparent;
+}
+
+.no-scroll { overflow: hidden; }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+
+.reveal-word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+.reveal-word > span {
+  display: inline-block;
+  transform: translateY(120%);
+  will-change: transform;
+}
+
+/* Instrument Serif has deep descenders (g, j, p, y). Any overflow-hidden wrapper
+   with tight leading clips them. Give them breathing room without adding to layout height. */
+h1 > .overflow-hidden,
+h2 > .overflow-hidden,
+h3 > .overflow-hidden,
+.font-display > .overflow-hidden,
+.font-display .overflow-hidden {
+  padding-bottom: 0.16em;
+  margin-bottom: -0.16em;
+}
+
+/* Blog prose */
+.prose-desnis {
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgba(244, 244, 242, 0.8);
+}
+.prose-desnis > * + * {
+  margin-top: 1.25em;
+}
+.prose-desnis h2 {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-size: 2.25rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--foreground);
+  margin-top: 2.5em;
+  margin-bottom: 0.5em;
+}
+.prose-desnis h3 {
+  font-family: var(--font-instrument-serif), "Times New Roman", serif;
+  font-size: 1.75rem;
+  line-height: 1.15;
+  color: var(--foreground);
+  margin-top: 2em;
+  margin-bottom: 0.3em;
+}
+.prose-desnis strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+.prose-desnis em {
+  font-style: italic;
+}
+.prose-desnis a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose-desnis a:hover {
+  text-decoration-thickness: 2px;
+}
+.prose-desnis ul {
+  list-style: none;
+  padding-left: 0;
+}
+.prose-desnis ul > li {
+  position: relative;
+  padding-left: 1.75em;
+}
+.prose-desnis ul > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.75em;
+  width: 1em;
+  height: 1px;
+  background: var(--accent);
+}
+.prose-desnis code {
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 0.9em;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 0.15em 0.4em;
+  border-radius: 0.35em;
+  color: var(--accent);
+}
+.prose-desnis blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.25em;
+  font-style: italic;
+  color: rgba(244, 244, 242, 0.9);
+}
